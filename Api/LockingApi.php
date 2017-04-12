@@ -14,19 +14,19 @@ namespace Zikula\PageLockModule\Api;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Twig_Environment;
+use Zikula\PageLockModule\Api\ApiInterface\LockingApiInterface;
 use Zikula\PageLockModule\Entity\PageLockEntity;
 use Zikula\PageLockModule\Entity\Repository\PageLockRepository;
 use Zikula\ThemeModule\Engine\Asset;
 use Zikula\ThemeModule\Engine\AssetBag;
-use Zikula\UsersModule\Api\CurrentUserApi;
+use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 
 /**
  * Class LockingApi.
  *
  * This class provides means for using a locking mechanism.
- * It should be used instead of the old user api.
  */
-class LockingApi
+class LockingApi implements LockingApiInterface
 {
     /**
      * Amount of required/opened accesses.
@@ -64,7 +64,7 @@ class LockingApi
     private $repository;
 
     /**
-     * @var CurrentUserApi
+     * @var CurrentUserApiInterface
      */
     private $currentUserApi;
 
@@ -100,7 +100,7 @@ class LockingApi
      * @param RequestStack       $requestStack   RequestStack service instance
      * @param EntityManager      $entityManager  EntityManager service instance
      * @param PageLockRepository $repository     PageLockRepository service instance
-     * @param CurrentUserApi     $currentUserApi CurrentUserApi service instance
+     * @param CurrentUserApiInterface $currentUserApi CurrentUserApi service instance
      * @param AssetBag           $jsAssetBag     AssetBag service instance for JS files
      * @param AssetBag           $cssAssetBag    AssetBag service instance for CSS files
      * @param AssetBag           $footerAssetBag AssetBag service instance for footer code
@@ -112,7 +112,7 @@ class LockingApi
         RequestStack $requestStack,
         EntityManager $entityManager,
         PageLockRepository $repository,
-        CurrentUserApi $currentUserApi,
+        CurrentUserApiInterface $currentUserApi,
         AssetBag $jsAssetBag,
         AssetBag $cssAssetBag,
         AssetBag $footerAssetBag,
@@ -132,13 +132,7 @@ class LockingApi
     }
 
     /**
-     * Requires a lock and adds the page locking code to the page header
-     *
-     * @param string $lockName        The name of the lock to be released
-     * @param string $returnUrl       The URL to return control to (optional) (default: null)
-     * @param bool   $ignoreEmptyLock Ignore an empty lock name (optional) (default: false)
-     *
-     * @return bool true
+     * {@inheritdoc}
      */
     public function addLock($lockName, $returnUrl = null, $ignoreEmptyLock = false)
     {
@@ -174,15 +168,7 @@ class LockingApi
     }
 
     /**
-     * Generate a lock on a page
-     *
-     * @param string $lockName      The name of the page to create/update a lock on
-     * @param string $lockedByTitle Name of user owning the current lock
-     * @param string $lockedByIPNo  Ip address of user owning the current lock
-     * @param string $sessionId     The ID of the session owning the lock (optional) (default: current session ID)
-     *
-     * @return ['haslock' => true if this user has a lock, false otherwise,
-     *          'lockedBy' => if 'haslock' is false then the user who has the lock, null otherwise]
+     * {@inheritdoc}
      */
     public function requireLock($lockName, $lockedByTitle, $lockedByIPNo, $sessionId = '')
     {
@@ -232,12 +218,7 @@ class LockingApi
     }
 
     /**
-     * Get all the locks for a given page
-     *
-     * @param string $lockName  The name of the page to return locks for
-     * @param string $sessionId The ID of the session owning the lock (optional) (default: current session ID)
-     *
-     * @return array array of locks for $lockName
+     * {@inheritdoc}
      */
     public function getLocks($lockName, $sessionId = '')
     {
@@ -257,12 +238,7 @@ class LockingApi
     }
 
     /**
-     * Releases a lock on a page
-     *
-     * @param string $lockName  The name of the lock to be released
-     * @param string $sessionId The ID of the session owning the lock (optional) (default: current session ID)
-     *
-     * @return bool true
+     * {@inheritdoc}
      */
     public function releaseLock($lockName, $sessionId = '')
     {
