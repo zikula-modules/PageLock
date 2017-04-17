@@ -11,7 +11,7 @@
 
 namespace Zikula\PageLockModule\Api;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Twig_Environment;
 use Zikula\PageLockModule\Api\ApiInterface\LockingApiInterface;
@@ -54,7 +54,7 @@ class LockingApi implements LockingApiInterface
     private $requestStack;
 
     /**
-     * @var EntityManager
+     * @var EntityManagerInterface
      */
     private $entityManager;
 
@@ -96,29 +96,29 @@ class LockingApi implements LockingApiInterface
     /**
      * LockingApi constructor.
      *
-     * @param Twig_Environment   $twig           Twig service instance
-     * @param RequestStack       $requestStack   RequestStack service instance
-     * @param EntityManager      $entityManager  EntityManager service instance
-     * @param PageLockRepository $repository     PageLockRepository service instance
-     * @param CurrentUserApiInterface $currentUserApi CurrentUserApi service instance
-     * @param AssetBag           $jsAssetBag     AssetBag service instance for JS files
-     * @param AssetBag           $cssAssetBag    AssetBag service instance for CSS files
-     * @param AssetBag           $footerAssetBag AssetBag service instance for footer code
-     * @param Asset              $assetHelper    Asset helper service instance
-     * @param string             $tempDir        Directory for temporary files
+     * @param Twig_Environment $twig
+     * @param RequestStack $requestStack
+     * @param EntityManagerInterface $entityManager
+     * @param PageLockRepository $repository
+     * @param CurrentUserApiInterface $currentUserApi
+     * @param AssetBag $jsAssetBag AssetBag
+     * @param AssetBag $cssAssetBag AssetBag
+     * @param AssetBag $footerAssetBag AssetBag
+     * @param Asset $assetHelper Asset
+     * @param string $tempDir
      */
     public function __construct(
         Twig_Environment $twig,
         RequestStack $requestStack,
-        EntityManager $entityManager,
+        EntityManagerInterface $entityManager,
         PageLockRepository $repository,
         CurrentUserApiInterface $currentUserApi,
         AssetBag $jsAssetBag,
         AssetBag $cssAssetBag,
         AssetBag $footerAssetBag,
         Asset $assetHelper,
-        $tempDir)
-    {
+        $tempDir
+    ) {
         $this->twig = $twig;
         $this->requestStack = $requestStack;
         $this->entityManager = $entityManager;
@@ -172,7 +172,7 @@ class LockingApi implements LockingApiInterface
      */
     public function requireLock($lockName, $lockedByTitle, $lockedByIPNo, $sessionId = '')
     {
-        $theSessionId = $sessionId != '' ? $sessionId : session_id();
+        $theSessionId = $sessionId != '' ? $sessionId : $this->requestStack->getMasterRequest()->getSession()->getId();
 
         $this->requireAccess();
 
@@ -207,7 +207,6 @@ class LockingApi implements LockingApiInterface
             $newLock->setSession($theSessionId);
             $newLock->setTitle($lockedByTitle);
             $newLock->setIpno($lockedByIPNo);
-            // write this back to the db
             $this->entityManager->persist($newLock);
         }
         $this->entityManager->flush();
@@ -222,7 +221,7 @@ class LockingApi implements LockingApiInterface
      */
     public function getLocks($lockName, $sessionId = '')
     {
-        $theSessionId = $sessionId != '' ? $sessionId : session_id();
+        $theSessionId = $sessionId != '' ? $sessionId : $this->requestStack->getMasterRequest()->getSession()->getId();
 
         $this->requireAccess();
 
@@ -242,7 +241,7 @@ class LockingApi implements LockingApiInterface
      */
     public function releaseLock($lockName, $sessionId = '')
     {
-        $theSessionId = $sessionId != '' ? $sessionId : session_id();
+        $theSessionId = $sessionId != '' ? $sessionId : $this->requestStack->getMasterRequest()->getSession()->getId();
 
         $this->requireAccess();
 
