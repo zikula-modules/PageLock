@@ -39,11 +39,6 @@ class LockingApi implements LockingApiInterface
     public static $pageLockFile;
 
     /**
-     * length of time to lock a page
-     */
-    const PAGELOCKLIFETIME = 30;
-
-    /**
      * @var Twig_Environment
      */
     private $twig;
