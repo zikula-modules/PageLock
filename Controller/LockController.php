@@ -12,8 +12,7 @@
 namespace Zikula\PageLockModule\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\Routing\Annotation\Route;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Response\Ajax\AjaxResponse;
 
@@ -25,10 +24,9 @@ use Zikula\Core\Response\Ajax\AjaxResponse;
 class LockController extends AbstractController
 {
     /**
-     * @Route("/refresh", options={"expose"=true})
-     * @Method("POST")
+     * @Route("/refresh", methods = {"POST"}, options={"expose"=true})
      *
-     * refresh a page lock
+     * Refresh a page lock.
      *
      * @param Request $request
      *
@@ -42,10 +40,9 @@ class LockController extends AbstractController
     }
 
     /**
-     * @Route("/check", options={"expose"=true})
-     * @Method("POST")
+     * @Route("/check", methods = {"POST"}, options={"expose"=true})
      *
-     * change a page lock
+     * Change a page lock.
      *
      * @param Request $request
      *
