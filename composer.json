@@ -1,6 +1,6 @@
 {
     "name": "zikula/pagelock-module",
-    "version": "1.2.3",
+    "version": "1.3.0",
     "description": "Page locking support",
     "type": "zikula-module",
     "license": "LGPL-3.0+",
@@ -14,7 +14,7 @@
         "psr-4": { "Zikula\\PageLockModule\\": "" }
     },
     "require": {
-        "php": ">5.4.0"
+        "php": ">=7.2.0"
     },
     "extra": {
         "zikula": {
