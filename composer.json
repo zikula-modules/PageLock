@@ -19,7 +19,7 @@
     "extra": {
         "zikula": {
             "class": "Zikula\\PageLockModule\\ZikulaPageLockModule",
-            "core-compatibility": ">=1.4.1",
+            "core-compatibility": ">=3.0.0",
             "displayname": "Page lock",
             "url": "pagelock",
             "securityschema": {
