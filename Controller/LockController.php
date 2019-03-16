@@ -11,10 +11,13 @@
 
 namespace Zikula\PageLockModule\Controller;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Zikula\Core\Controller\AbstractController;
-use Zikula\Core\Response\Ajax\AjaxResponse;
+use Zikula\PageLockModule\Api\ApiInterface\LockingApiInterface;
+use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 
 /**
  * @Route("/lock")
@@ -24,51 +27,58 @@ use Zikula\Core\Response\Ajax\AjaxResponse;
 class LockController extends AbstractController
 {
     /**
-     * @Route("/refresh", methods = {"POST"}, options={"expose"=true})
+     * @Route("/refresh", options={"expose"=true})
+     * @Method("POST")
      *
      * Refresh a page lock.
      *
      * @param Request $request
+     * @param LockingApiInterface $lockingApi
+     * @param CurrentUserApiInterface $currentUserApi
      *
-     * @return AjaxResponse containing { hasLock: bool, message: string, lockedBy: string, message:string|null }
+     * @return JsonResponse
      */
-    public function refreshpagelockAction(Request $request)
+    public function refreshpagelockAction(Request $request, LockingApiInterface $lockingApi, CurrentUserApiInterface $currentUserApi)
     {
-        $lockInfo = $this->getLockInfo($request);
+        $lockInfo = $this->getLockInfo($request, $lockingApi, $currentUserApi);
 
-        return new AjaxResponse($lockInfo);
+        return $this->json($lockInfo);
     }
 
     /**
-     * @Route("/check", methods = {"POST"}, options={"expose"=true})
+     * @Route("/check", options={"expose"=true})
+     * @Method("POST")
      *
      * Change a page lock.
      *
      * @param Request $request
+     * @param LockingApiInterface $lockingApi
+     * @param CurrentUserApiInterface $currentUserApi
      *
-     * @return AjaxResponse containing { hasLock: bool, message: string, lockedBy: string, message:string|null }
+     * @return JsonResponse
      */
-    public function checkpagelockAction(Request $request)
+    public function checkpagelockAction(Request $request, LockingApiInterface $lockingApi, CurrentUserApiInterface $currentUserApi)
     {
-        $lockInfo = $this->getLockInfo($request);
+        $lockInfo = $this->getLockInfo($request, $lockingApi, $currentUserApi);
 
-        return new AjaxResponse($lockInfo);
+        return $this->json($lockInfo);
     }
 
     /**
      * Requires a lock and returns it's information.
      *
      * @param Request $request
+     * @param LockingApiInterface $lockingApi
+     * @param CurrentUserApiInterface $currentUserApi
      *
      * @return array Lock information data
      */
-    private function getLockInfo(Request $request)
+    private function getLockInfo(Request $request, LockingApiInterface $lockingApi, CurrentUserApiInterface $currentUserApi)
     {
         $lockName = $request->request->get('lockname');
-        $userName = $this->get('zikula_users_module.current_user')->get('uname');
+        $userName = $currentUserApi->get('uname');
 
-        $lockInfo = $this->get('zikula_pagelock_module.api.locking')
-            ->requireLock($lockName, $userName, $request->getClientIp(), $request->getSession()->getId());
+        $lockInfo = $lockingApi->requireLock($lockName, $userName, $request->getClientIp(), $request->getSession()->getId());
 
         $lockInfo['message'] = $lockInfo['hasLock'] ? null : $this->__('Error! Lock broken!');
 

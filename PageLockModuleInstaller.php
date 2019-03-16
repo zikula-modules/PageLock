@@ -12,6 +12,7 @@
 namespace Zikula\PageLockModule;
 
 use Zikula\Core\AbstractExtensionInstaller;
+use Zikula\PageLockModule\Entity\PageLockEntity;
 
 /**
  * Installation and upgrade routines for the pagelock module.
@@ -22,7 +23,7 @@ class PageLockModuleInstaller extends AbstractExtensionInstaller
      * @var array
      */
     private $entities = [
-        'Zikula\PageLockModule\Entity\PageLockEntity'
+        PageLockEntity::class
     ];
 
     /**
@@ -34,7 +35,9 @@ class PageLockModuleInstaller extends AbstractExtensionInstaller
     {
         try {
             $this->schemaTool->create($this->entities);
-        } catch (\Exception $e) {
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+
             return false;
         }
 
@@ -53,7 +56,9 @@ class PageLockModuleInstaller extends AbstractExtensionInstaller
         // Upgrade dependent on old version number
         switch ($oldVersion) {
             case '1.1.1':
-                $this->schemaTool->update(['Zikula\PageLockModule\Entity\PageLockEntity']);
+                $this->schemaTool->update([
+                    PageLockEntity::class
+                ]);
             case '2.0.0':
                 // current version
         }
@@ -70,7 +75,9 @@ class PageLockModuleInstaller extends AbstractExtensionInstaller
     {
         try {
             $this->schemaTool->drop($this->entities);
-        } catch (\PDOException $e) {
+        } catch (\PDOException $exception) {
+            $this->addFlash('error', $exception->getMessage());
+
             return false;
         }
 

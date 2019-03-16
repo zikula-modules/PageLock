@@ -11,17 +11,24 @@
 
 namespace Zikula\PageLockModule\Entity\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
 use InvalidArgumentException;
+use Zikula\PageLockModule\Entity\PageLockEntity;
 
 /**
  * Repository class used to implement own convenience methods for performing certain DQL queries.
  *
  * This is the repository class for pagelock entities.
  */
-class PageLockRepository extends EntityRepository
+class PageLockRepository extends ServiceEntityRepository
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, PageLockEntity::class);
+    }
+
     /**
      * Returns amount of active locks.
      *
