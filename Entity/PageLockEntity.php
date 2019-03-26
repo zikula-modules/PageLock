@@ -94,7 +94,7 @@ class PageLockEntity
         return $this->id;
     }
 
-    public function setName(string $name): PageLockEntity
+    public function setName(string $name): self
     {
         $this->name = $name;
 
@@ -106,7 +106,7 @@ class PageLockEntity
         return $this->name;
     }
 
-    public function setCdate(DateTime $cdate): PageLockEntity
+    public function setCdate(DateTime $cdate): self
     {
         $this->cdate = $cdate;
 
@@ -118,7 +118,7 @@ class PageLockEntity
         return $this->cdate;
     }
 
-    public function setEdate(DateTime $edate): PageLockEntity
+    public function setEdate(DateTime $edate): self
     {
         $this->edate = $edate;
 
@@ -130,7 +130,7 @@ class PageLockEntity
         return $this->edate;
     }
 
-    public function setSession(string $session): PageLockEntity
+    public function setSession(string $session): self
     {
         $this->session = $session;
 
@@ -142,7 +142,7 @@ class PageLockEntity
         return $this->session;
     }
 
-    public function setTitle(string $title): PageLockEntity
+    public function setTitle(string $title): self
     {
         $this->title = $title;
 
@@ -154,7 +154,7 @@ class PageLockEntity
         return $this->title;
     }
 
-    public function setIpno(string $ipno): PageLockEntity
+    public function setIpno(string $ipno): self
     {
         $this->ipno = $ipno;
 
