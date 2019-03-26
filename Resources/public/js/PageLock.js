@@ -20,7 +20,7 @@ var PageLock = {};
 
     // Button event handler for "break lock"
     PageLock.BreakLock = function() {
-        if (confirm(Translator.__('Are you sure you want to break this lock?')) == false) {
+        if (true !== confirm(Translator.__('Are you sure you want to break this lock?'))) {
             return;
         }
 
@@ -35,7 +35,6 @@ var PageLock = {};
     PageLock.Cancel = function() {
         PageLock.HideOverlay();
         window.location = PageLock.ReturnUrl;
-        return true;
     };
 
     // Ajax method for refreshing existing lock
@@ -77,8 +76,7 @@ var PageLock = {};
     };
 
     // Function to stop showing locked window overlay and form
-    PageLock.StopLocking = function(doReload)
-    {
+    PageLock.StopLocking = function(doReload) {
         if (doReload) {
             // Reload in order to refresh data
             window.location = window.location;
@@ -107,10 +105,8 @@ var PageLock = {};
         });
     };
 
-    PageLock.HideOverlay = function()
-    {
+    PageLock.HideOverlay = function() {
         $('#pageLockModal').modal('hide');
-        return;
     };
 
     // see http://stackoverflow.com/questions/5205445/jquery-blinking-highlight-effect-on-div

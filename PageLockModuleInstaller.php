@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -11,6 +13,8 @@
 
 namespace Zikula\PageLockModule;
 
+use Exception;
+use PDOException;
 use Zikula\Core\AbstractExtensionInstaller;
 use Zikula\PageLockModule\Entity\PageLockEntity;
 
@@ -26,16 +30,11 @@ class PageLockModuleInstaller extends AbstractExtensionInstaller
         PageLockEntity::class
     ];
 
-    /**
-     * Initialise the module.
-     *
-     * @return boolean True if initialisation successful, false otherwise
-     */
-    public function install()
+    public function install(): bool
     {
         try {
             $this->schemaTool->create($this->entities);
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $this->addFlash('error', $exception->getMessage());
 
             return false;
@@ -44,16 +43,8 @@ class PageLockModuleInstaller extends AbstractExtensionInstaller
         return true;
     }
 
-    /**
-     * upgrade the module from an old version
-     *
-     * @param string $oldVersion version number string to upgrade from
-     *
-     * @return bool true as there are no upgrade routines currently
-     */
-    public function upgrade($oldVersion)
+    public function upgrade(string $oldVersion): bool
     {
-        // Upgrade dependent on old version number
         switch ($oldVersion) {
             case '1.1.1':
                 $this->schemaTool->update([
@@ -66,16 +57,11 @@ class PageLockModuleInstaller extends AbstractExtensionInstaller
         return true;
     }
 
-    /**
-     * delete the Pagelock module
-     *
-     * @return bool true if deletion successful, false otherwise
-     */
-    public function uninstall()
+    public function uninstall(): bool
     {
         try {
             $this->schemaTool->drop($this->entities);
-        } catch (\PDOException $exception) {
+        } catch (PDOException $exception) {
             $this->addFlash('error', $exception->getMessage());
 
             return false;

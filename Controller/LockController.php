@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -13,8 +15,7 @@ namespace Zikula\PageLockModule\Controller;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\Routing\Annotation\Route;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\PageLockModule\Api\ApiInterface\LockingApiInterface;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
@@ -27,38 +28,30 @@ use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 class LockController extends AbstractController
 {
     /**
-     * @Route("/refresh", options={"expose"=true})
-     * @Method("POST")
+     * @Route("/refresh", methods={"POST"}, options={"expose"=true})
      *
      * Refresh a page lock.
-     *
-     * @param Request $request
-     * @param LockingApiInterface $lockingApi
-     * @param CurrentUserApiInterface $currentUserApi
-     *
-     * @return JsonResponse
      */
-    public function refreshpagelockAction(Request $request, LockingApiInterface $lockingApi, CurrentUserApiInterface $currentUserApi)
-    {
+    public function refreshpagelockAction(
+        Request $request,
+        LockingApiInterface $lockingApi,
+        CurrentUserApiInterface $currentUserApi
+    ): JsonResponse {
         $lockInfo = $this->getLockInfo($request, $lockingApi, $currentUserApi);
 
         return $this->json($lockInfo);
     }
 
     /**
-     * @Route("/check", options={"expose"=true})
-     * @Method("POST")
+     * @Route("/check", methods={"POST"}, options={"expose"=true})
      *
      * Change a page lock.
-     *
-     * @param Request $request
-     * @param LockingApiInterface $lockingApi
-     * @param CurrentUserApiInterface $currentUserApi
-     *
-     * @return JsonResponse
      */
-    public function checkpagelockAction(Request $request, LockingApiInterface $lockingApi, CurrentUserApiInterface $currentUserApi)
-    {
+    public function checkpagelockAction(
+        Request $request,
+        LockingApiInterface $lockingApi,
+        CurrentUserApiInterface $currentUserApi
+    ): JsonResponse {
         $lockInfo = $this->getLockInfo($request, $lockingApi, $currentUserApi);
 
         return $this->json($lockInfo);
@@ -66,15 +59,12 @@ class LockController extends AbstractController
 
     /**
      * Requires a lock and returns it's information.
-     *
-     * @param Request $request
-     * @param LockingApiInterface $lockingApi
-     * @param CurrentUserApiInterface $currentUserApi
-     *
-     * @return array Lock information data
      */
-    private function getLockInfo(Request $request, LockingApiInterface $lockingApi, CurrentUserApiInterface $currentUserApi)
-    {
+    private function getLockInfo(
+        Request $request,
+        LockingApiInterface $lockingApi,
+        CurrentUserApiInterface $currentUserApi
+    ): array {
         $lockName = $request->request->get('lockname');
         $userName = $currentUserApi->get('uname');
 

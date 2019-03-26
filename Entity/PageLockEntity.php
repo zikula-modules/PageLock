@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -11,6 +13,7 @@
 
 namespace Zikula\PageLockModule\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -44,7 +47,7 @@ class PageLockEntity
     /**
      * Creation date of the pagelock
      *
-     * @var \Datetime
+     * @var DateTime
      *
      * @ORM\Column(name="cdate", type="datetime", nullable=false)
      */
@@ -53,7 +56,7 @@ class PageLockEntity
     /**
      * Expiry date of the pagelock
      *
-     * @var \Datetime
+     * @var DateTime
      *
      * @ORM\Column(name="edate", type="datetime", nullable=false)
      */
@@ -86,150 +89,79 @@ class PageLockEntity
      */
     private $ipno;
 
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * Set name
-     *
-     * @param string $name
-     * @return PagelockEntity
-     */
-    public function setName($name)
+    public function setName(string $name): PageLockEntity
     {
         $this->name = $name;
 
         return $this;
     }
 
-    /**
-     * Get name
-     *
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * Set cdate
-     *
-     * @param \Datetime $cdate
-     * @return PagelockEntity
-     */
-    public function setCdate($cdate)
+    public function setCdate(DateTime $cdate): PageLockEntity
     {
         $this->cdate = $cdate;
 
         return $this;
     }
 
-    /**
-     * Get cdate
-     *
-     * @return \Datetime
-     */
-    public function getCdate()
+    public function getCdate(): DateTime
     {
         return $this->cdate;
     }
 
-    /**
-     * Set edate
-     *
-     * @param \Datetime $edate
-     * @return PagelockEntity
-     */
-    public function setEdate($edate)
+    public function setEdate(DateTime $edate): PageLockEntity
     {
         $this->edate = $edate;
 
         return $this;
     }
 
-    /**
-     * Get edate
-     *
-     * @return \Datetime
-     */
-    public function getEdate()
+    public function getEdate(): DateTime
     {
         return $this->edate;
     }
 
-    /**
-     * Set session
-     *
-     * @param string $session
-     * @return PagelockEntity
-     */
-    public function setSession($session)
+    public function setSession(string $session): PageLockEntity
     {
         $this->session = $session;
 
         return $this;
     }
 
-    /**
-     * Get session
-     *
-     * @return string
-     */
-    public function getSession()
+    public function getSession(): string
     {
         return $this->session;
     }
 
-    /**
-     * Set title
-     *
-     * @param string $title
-     * @return PagelockEntity
-     */
-    public function setTitle($title)
+    public function setTitle(string $title): PageLockEntity
     {
         $this->title = $title;
 
         return $this;
     }
 
-    /**
-     * Get title
-     *
-     * @return string
-     */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
 
-    /**
-     * Set ipno
-     *
-     * @param string $ipno
-     * @return PagelockEntity
-     */
-    public function setIpno($ipno)
+    public function setIpno(string $ipno): PageLockEntity
     {
         $this->ipno = $ipno;
 
         return $this;
     }
 
-    /**
-     * Get ipno
-     *
-     * @return string
-     */
-    public function getIpno()
+    public function getIpno(): string
     {
         return $this->ipno;
     }

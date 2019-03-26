@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -11,8 +13,10 @@
 
 namespace Zikula\PageLockModule\Entity\Repository;
 
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\QueryBuilder;
 use InvalidArgumentException;
 use Zikula\PageLockModule\Entity\PageLockEntity;
@@ -32,18 +36,13 @@ class PageLockRepository extends ServiceEntityRepository
     /**
      * Returns amount of active locks.
      *
-     * @param string $lockName  Name of lock
-     * @param string $sessionId Identifier of current session
-     *
-     * @return integer
-     *
      * @throws InvalidArgumentException Thrown if invalid parameters are received
+     * @throws NonUniqueResultException
      */
-    public function getActiveLockAmount($lockName, $sessionId)
+    public function getActiveLockAmount(string $lockName, string $sessionId): int
     {
-        // check parameters
-        if ($lockName == '' || $sessionId == '') {
-            throw new \InvalidArgumentException('Invalid parameter received.');
+        if ('' === $lockName || '' === $sessionId) {
+            throw new InvalidArgumentException('Invalid parameter received.');
         }
 
         $qb = $this->createQueryBuilder('tbl')
@@ -52,26 +51,18 @@ class PageLockRepository extends ServiceEntityRepository
 
         $query = $qb->getQuery();
 
-        $count = (int)$query->getSingleScalarResult();
-
-        return $count;
+        return (int)$query->getSingleScalarResult();
     }
 
     /**
      * Returns active locks.
      *
-     * @param string $lockName  Name of lock
-     * @param string $sessionId Identifier of current session
-     *
-     * @return array
-     *
      * @throws InvalidArgumentException Thrown if invalid parameters are received
      */
-    public function getActiveLocks($lockName, $sessionId)
+    public function getActiveLocks(string $lockName, string $sessionId): array
     {
-        // check parameters
-        if ($lockName == '' || $sessionId == '') {
-            throw new \InvalidArgumentException('Invalid parameter received.');
+        if ('' === $lockName || '' === $sessionId) {
+            throw new InvalidArgumentException('Invalid parameter received.');
         }
 
         $qb = $this->createQueryBuilder('tbl')
@@ -94,18 +85,12 @@ class PageLockRepository extends ServiceEntityRepository
     /**
      * Updates the expire date of affected lock.
      *
-     * @param string    $lockName   Name of lock to be updated
-     * @param string    $sessionId  Identifier of current session
-     * @param \DateTime $expireDate The new expire date
-     *
-     * @return void
-     *
      * @throws InvalidArgumentException Thrown if invalid parameters are received
      */
-    public function updateExpireDate($lockName, $sessionId, \DateTime $expireDate)
+    public function updateExpireDate(string $lockName, string $sessionId, DateTime $expireDate): void
     {
         // check parameters
-        if ($lockName == '' || $sessionId == '') {
+        if ('' === $lockName || '' === $sessionId) {
             throw new \InvalidArgumentException('Invalid parameter received.');
         }
 
@@ -120,15 +105,13 @@ class PageLockRepository extends ServiceEntityRepository
 
     /**
      * Deletes all locks which expired.
-     *
-     * @return void
      */
-    public function deleteExpiredLocks()
+    public function deleteExpiredLocks(): void
     {
         $qb = $this->createQueryBuilder('tbl')
             ->delete('Zikula\PageLockModule\Entity\PageLockEntity', 'tbl')
             ->where('tbl.edate < :now')
-            ->setParameter('now', new \DateTime());
+            ->setParameter('now', new DateTime());
         $query = $qb->getQuery();
 
         $query->execute();
@@ -137,17 +120,11 @@ class PageLockRepository extends ServiceEntityRepository
     /**
      * Deletes a lock for a given name.
      *
-     * @param string $lockName  Name of lock to be deleted
-     * @param string $sessionId Identifier of current session
-     *
-     * @return void
-     *
      * @throws InvalidArgumentException Thrown if invalid parameters are received
      */
-    public function deleteByLockName($lockName, $sessionId)
+    public function deleteByLockName(string $lockName, string $sessionId): void
     {
-        // check parameters
-        if ($lockName == '' || $sessionId == '') {
+        if ('' === $lockName || '' === $sessionId) {
             throw new \InvalidArgumentException('Invalid parameter received.');
         }
 
@@ -165,14 +142,8 @@ class PageLockRepository extends ServiceEntityRepository
 
     /**
      * Adds common filters to the given query builder.
-     *
-     * @param QueryBuilder $qb The current query builder instance
-     * @param string $lockName  Name of lock
-     * @param string $sessionId Identifier of current session
-     *
-     * @return QueryBuilder The enriched query builder
      */
-    private function addCommonFilters(QueryBuilder $qb, $lockName, $sessionId)
+    private function addCommonFilters(QueryBuilder $qb, string $lockName, string $sessionId): QueryBuilder
     {
         $qb
            ->where('tbl.name = :lockName')
