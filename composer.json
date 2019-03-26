@@ -1,6 +1,6 @@
 {
     "name": "zikula/pagelock-module",
-    "version": "1.3.4",
+    "version": "1.3.5",
     "description": "Page locking support",
     "type": "zikula-module",
     "license": "LGPL-3.0+",
