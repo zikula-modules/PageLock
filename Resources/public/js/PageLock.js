@@ -43,15 +43,14 @@ var PageLock = {};
             url: Routing.generate('zikulapagelockmodule_lock_refreshpagelock'),
             data: {
                 lockname: PageLock.LockName
-            },
-            success: function (data) {
-                if (!data.hasLock) {
-                    alert(data.message);
-                }
-
-                clearTimeout(PageLock.Timer);
-                PageLock.Timer = setTimeout(PageLock.RefreshLock, PageLock.PingTime*1000);
             }
+        }).done(function (data) {
+            if (!data.hasLock) {
+                alert(data.message);
+            }
+
+            clearTimeout(PageLock.Timer);
+            PageLock.Timer = setTimeout(PageLock.RefreshLock, PageLock.PingTime*1000);
         });
     };
 
@@ -63,14 +62,13 @@ var PageLock = {};
             url: Routing.generate('zikulapagelockmodule_lock_checkpagelock'),
             data: {
                 lockname: PageLock.LockName
-            },
-            success: function (data) {
-                if (data.hasLock) {
-                    PageLock.StopLocking(true);
-                } else {
-                    clearTimeout(PageLock.Timer);
-                    PageLock.Timer = setTimeout(PageLock.CheckLock, PageLock.PingTime*1000);
-                }
+            }
+        }).done(function (data) {
+            if (data.hasLock) {
+                PageLock.StopLocking(true);
+            } else {
+                clearTimeout(PageLock.Timer);
+                PageLock.Timer = setTimeout(PageLock.CheckLock, PageLock.PingTime*1000);
             }
         });
     };
