@@ -148,7 +148,7 @@ class LockingApi implements LockingApiInterface
 
     public function requireLock(string $lockName, string $lockedByTitle, string $lockedByIPNo, string $sessionId = ''): array
     {
-        $theSessionId = '' !== $sessionId ? $sessionId : $this->requestStack->getMasterRequest()->getSession()->getId();
+        $theSessionId = $this->getSessionId($sessionId);
 
         $this->requireAccess();
 
@@ -194,7 +194,7 @@ class LockingApi implements LockingApiInterface
 
     public function getLocks(string $lockName, string $sessionId = ''): array
     {
-        $theSessionId = '' !== $sessionId ? $sessionId : $this->requestStack->getMasterRequest()->getSession()->getId();
+        $theSessionId = $this->getSessionId($sessionId);
 
         $this->requireAccess();
 
@@ -211,7 +211,7 @@ class LockingApi implements LockingApiInterface
 
     public function releaseLock(string $lockName, string $sessionId = ''): void
     {
-        $theSessionId = '' !== $sessionId ? $sessionId : $this->requestStack->getMasterRequest()->getSession()->getId();
+        $theSessionId = $this->getSessionId($sessionId);
 
         $this->requireAccess();
 
@@ -249,6 +249,18 @@ class LockingApi implements LockingApiInterface
         if (0 === self::$pageLockAccessCount) {
             flock(self::$pageLockFile, LOCK_UN);
             fclose(self::$pageLockFile);
+        }
+    }
+
+    private function getSessionId(string $sessionId): string
+    {
+        if ('' !== $sessionId) {
+            return $sessionId;
+        }
+
+        $request = $this->requestStack->getMasterRequest();
+        if ($request->hasSession() && ($session = $request->getSession())) {
+            return $session->getId();
         }
     }
 }
