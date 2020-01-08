@@ -17,4 +17,4 @@ services:
           $jsAssetBag: '@zikula_core.common.theme.assets_js'
           $cssAssetBag: '@zikula_core.common.theme.assets_css'
           $footerAssetBag: '@zikula_core.common.theme.assets_footer'
-          $tempDir: '%temp_dir%'
+          $tempDir: '%kernel.cache_dir%'
