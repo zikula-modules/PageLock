@@ -74,7 +74,7 @@ class LockController extends AbstractController
         }
         $lockInfo = $lockingApi->requireLock($lockName, $userName, $request->getClientIp(), $sessionId);
 
-        $lockInfo['message'] = $lockInfo['hasLock'] ? null : $this->__('Error! Lock broken!');
+        $lockInfo['message'] = $lockInfo['hasLock'] ? null : $this->trans('Error! Lock broken!');
 
         return $lockInfo;
     }
