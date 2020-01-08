@@ -74,12 +74,7 @@ class PageLockRepository extends ServiceEntityRepository
 
         $query = $qb->getQuery();
 
-        $locks = $query->getArrayResult();
-
-        // now flush to database
-        $this->getEntityManager()->flush();
-
-        return $locks;
+        return $query->getResult();
     }
 
     /**
