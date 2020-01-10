@@ -28,69 +28,62 @@ class PageLockEntity
     /**
      * Pagelock ID
      *
-     * @var int
-     *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @var int
      */
     private $id;
 
     /**
      * Pagelock name
      *
-     * @var string
-     *
      * @ORM\Column(name="name", type="string", length=100, nullable=false)
      * @Assert\Length(min="0", max="100", allowEmptyString="false")
+     * @var string
      */
     private $name;
 
     /**
      * Creation date of the pagelock
      *
-     * @var DateTime
-     *
      * @ORM\Column(name="cdate", type="datetime", nullable=false)
+     * @var DateTime
      */
     private $cdate;
 
     /**
      * Expiry date of the pagelock
      *
-     * @var DateTime
-     *
      * @ORM\Column(name="edate", type="datetime", nullable=false)
+     * @var DateTime
      */
     private $edate;
 
     /**
      * Session ID for this pagelock
      *
-     * @var string
-     *
      * @ORM\Column(name="session", type="string", length=50, nullable=false)
      * @Assert\Length(min="0", max="50", allowEmptyString="false")
+     * @var string
      */
     private $session;
 
     /**
      * Title of the pagelock
      *
-     * @var string
-     *
      * @ORM\Column(name="title", type="string", length=100, nullable=false)
      * @Assert\Length(min="0", max="100", allowEmptyString="false")
+     * @var string
      */
     private $title;
 
     /**
      * IP address of the machine acquiring the pagelock
      *
-     * @var string
-     *
      * @ORM\Column(name="ipno", type="string", length=40, nullable=false)
      * @Assert\Length(min="0", max="40", allowEmptyString="false")
+     * @var string
      */
     private $ipno;
 
