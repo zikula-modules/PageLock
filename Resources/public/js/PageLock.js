@@ -20,7 +20,7 @@ var PageLock = {};
 
     // Button event handler for "break lock"
     PageLock.BreakLock = function() {
-        if (true !== confirm(Translator.__('Are you sure you want to break this lock?'))) {
+        if (true !== confirm(Translator.trans('Are you sure you want to break this lock?'))) {
             return;
         }
 
