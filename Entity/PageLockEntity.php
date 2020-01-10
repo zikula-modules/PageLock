@@ -15,6 +15,7 @@ namespace Zikula\PageLockModule\Entity;
 
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Pagelock
@@ -27,7 +28,7 @@ class PageLockEntity
     /**
      * Pagelock ID
      *
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
@@ -41,6 +42,7 @@ class PageLockEntity
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=100, nullable=false)
+     * @Assert\Length(min="0", max="100", allowEmptyString="false")
      */
     private $name;
 
@@ -68,6 +70,7 @@ class PageLockEntity
      * @var string
      *
      * @ORM\Column(name="session", type="string", length=50, nullable=false)
+     * @Assert\Length(min="0", max="50", allowEmptyString="false")
      */
     private $session;
 
@@ -77,6 +80,7 @@ class PageLockEntity
      * @var string
      *
      * @ORM\Column(name="title", type="string", length=100, nullable=false)
+     * @Assert\Length(min="0", max="100", allowEmptyString="false")
      */
     private $title;
 
@@ -86,6 +90,7 @@ class PageLockEntity
      * @var string
      *
      * @ORM\Column(name="ipno", type="string", length=40, nullable=false)
+     * @Assert\Length(min="0", max="40", allowEmptyString="false")
      */
     private $ipno;
 
