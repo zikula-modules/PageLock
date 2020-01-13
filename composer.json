@@ -22,6 +22,11 @@
             "core-compatibility": ">=3.0.0",
             "displayname": "Page lock",
             "url": "pagelock",
+            "capabilities": {
+                "admin": {
+                    "icon": "fas fa-lock"
+                }
+            },
             "securityschema": {
                 "ZikulaPageLockModule::": "::"
             }
