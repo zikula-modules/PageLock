@@ -8,7 +8,7 @@
             <div class="modal-body">
                 <p>{% trans %}This page is locked because another user is working on it. Please wait: the page will be unlocked automatically when the other user has finished, and you will be informed.{% endtrans %}</p>
                 <div id="pageLockOverlayLED"></div>
-                <p>{% trans with {'%s': lockedBy} %}Locked by %s.{% endtrans %}</p>
+                <p>{% trans with {'%userName%': lockedBy} %}Locked by %userName%.{% endtrans %}</p>
             </div>
             <div class="modal-footer">
                 <button type="button" id="pageLockBackButton" class="btn btn-secondary" data-dismiss="modal">{% trans %}Back{% endtrans %}</button>
