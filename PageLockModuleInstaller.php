@@ -15,7 +15,7 @@ namespace Zikula\PageLockModule;
 
 use Exception;
 use PDOException;
-use Zikula\Core\AbstractExtensionInstaller;
+use Zikula\ExtensionsModule\Installer\AbstractExtensionInstaller;
 use Zikula\PageLockModule\Entity\PageLockEntity;
 
 /**
