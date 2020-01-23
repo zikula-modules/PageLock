@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Zikula\PageLockModule;
 
-use Zikula\ExtensionsModule\Bundle\AbstractCoreModule;
+use Zikula\ExtensionsModule\AbstractModule;
 
 /**
  * Base module definition for the pagelock module.
  */
-class ZikulaPageLockModule extends AbstractCoreModule
+class ZikulaPageLockModule extends AbstractModule
 {
 }
