@@ -18,25 +18,6 @@
         </div>
     </div>
 </div>
-{% set customScript %}
-    <script>
-    /* <![CDATA[ */
-        ( function($) {
-            $(document).ready(function() {
-                {% if lockName is not empty %}
-                    {% if hasLock %}
-                        $(document).ready(PageLock.UnlockedPage);
-                    {% else %}
-                        $(document).ready(PageLock.LockedPage);
-                    {% endif %}
-                {% endif %}
-            });
-        })(jQuery);
-
-        PageLock.LockName = '{{ lockName }}';
-        PageLock.ReturnUrl = '{{ returnUrl }}';
-        PageLock.PingTime = {{ pingTime }};
-    /* ]]> */
-    </script>
-{% endset %}
-{{ pageAddAsset('footer', customScript) }}
+<div id="pageLockArguments" data-haslock="{% if hasLock %}true{% else %}false{% endif %}" data-lock-name="{{ lockName|e('html_attr') }}" data-return-url="{{ returnUrl|e('html_attr') }}" data-ping-time="{{ pingTime|e('html_attr') }}"></div>
+{{ pageAddAsset('stylesheet', zasset('@ZikulaPageLockModule:css/style.css')) }}
+{{ pageAddAsset('javascript', zasset('@ZikulaPageLockModule:js/PageLock.js')) }}

@@ -1,6 +1,9 @@
 // Copyright Zikula Foundation, licensed MIT.
 
 var PageLock = {};
+PageLock.LockName = '';
+PageLock.ReturnUrl = '';
+PageLock.PingTime = 1;
 
 (function ($) {
     PageLock.Timer = null;
@@ -8,14 +11,14 @@ var PageLock = {};
     // Called on window load for unlocked page
     PageLock.UnlockedPage = function() {
         clearTimeout(PageLock.Timer);
-        PageLock.Timer = setTimeout(PageLock.RefreshLock, PageLock.PingTime*1000);
+        PageLock.Timer = setTimeout(PageLock.RefreshLock, PageLock.PingTime * 1000);
     };
 
     // Called on window load for locked page
     PageLock.LockedPage = function() {
         PageLock.ShowOverlay();
         clearTimeout(PageLock.Timer);
-        PageLock.Timer = setTimeout(PageLock.CheckLock, PageLock.PingTime*1000);
+        PageLock.Timer = setTimeout(PageLock.CheckLock, PageLock.PingTime * 1000);
     };
 
     // Button event handler for "break lock"
@@ -84,8 +87,7 @@ var PageLock = {};
     };
 
     // Display locked window overlay and form
-    PageLock.ShowOverlay = function()
-    {
+    PageLock.ShowOverlay = function() {
         $('#pageLockModal').modal({
             backdrop: 'static',
             keyboard: false
@@ -119,5 +121,18 @@ var PageLock = {};
 
             }
         });
+    }
+
+    $(document).ready(function() {
+        var paramHolder = $('#pageLockArguments');
+        if ('true' == paramHolder.data('has-lock')) {
+            PageLock.UnlockedPage();
+        } else {
+            PageLock.LockedPage();
+        }
+
+        PageLock.LockName = paramHolder.data('lock-name');
+        PageLock.ReturnUrl = paramHolder.data('return-url');
+        PageLock.PingTime = paramHolder.data('ping-time');
     }
 })(jQuery);

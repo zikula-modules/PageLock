@@ -20,7 +20,6 @@ use Twig\Environment;
 use Zikula\PageLockModule\Api\ApiInterface\LockingApiInterface;
 use Zikula\PageLockModule\Entity\PageLockEntity;
 use Zikula\PageLockModule\Entity\Repository\PageLockRepository;
-use Zikula\ThemeModule\Engine\Asset;
 use Zikula\ThemeModule\Engine\AssetBag;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 
@@ -69,22 +68,7 @@ class LockingApi implements LockingApiInterface
     /**
      * @var AssetBag
      */
-    private $jsAssetBag;
-
-    /**
-     * @var AssetBag
-     */
-    private $cssAssetBag;
-
-    /**
-     * @var AssetBag
-     */
     private $footerAssetBag;
-
-    /**
-     * @var Asset
-     */
-    private $assetHelper;
 
     /**
      * @var string
@@ -97,10 +81,7 @@ class LockingApi implements LockingApiInterface
         EntityManagerInterface $entityManager,
         PageLockRepository $repository,
         CurrentUserApiInterface $currentUserApi,
-        AssetBag $jsAssetBag,
-        AssetBag $cssAssetBag,
         AssetBag $footerAssetBag,
-        Asset $assetHelper,
         string $tempDir
     ) {
         $this->twig = $twig;
@@ -108,10 +89,7 @@ class LockingApi implements LockingApiInterface
         $this->entityManager = $entityManager;
         $this->repository = $repository;
         $this->currentUserApi = $currentUserApi;
-        $this->jsAssetBag = $jsAssetBag;
-        $this->cssAssetBag = $cssAssetBag;
         $this->footerAssetBag = $footerAssetBag;
-        $this->assetHelper = $assetHelper;
         $this->tempDirectory = $tempDir;
     }
 
@@ -120,9 +98,6 @@ class LockingApi implements LockingApiInterface
         if (empty($lockName) && $ignoreEmptyLock) {
             return;
         }
-
-        $this->jsAssetBag->add($this->assetHelper->resolve('@ZikulaPageLockModule:js/PageLock.js'));
-        $this->cssAssetBag->add($this->assetHelper->resolve('@ZikulaPageLockModule:css/style.css'));
 
         $lockInfo = $this->requireLock($lockName, $this->currentUserApi->get('uname'), $this->requestStack->getCurrentRequest()->getClientIp());
 
