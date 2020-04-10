@@ -1,4 +1,4 @@
-// Copyright Zikula Foundation, licensed MIT.
+// Copyright Zikula, licensed MIT.
 
 var PageLock = {};
 PageLock.LockName = '';
@@ -112,7 +112,7 @@ PageLock.PingTime = 1;
     // see http://stackoverflow.com/questions/5205445/jquery-blinking-highlight-effect-on-div
     PageLock.BlinkAnimation = function(id) {
         $(id).animate({ backgroundColor: '#FF3030' }, {
-            duration: 100, 
+            duration: 100,
             complete: function() {
                 // reset
                 $(id).delay(100).animate({ backgroundColor: '#B0001D' }, {
