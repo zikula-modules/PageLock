@@ -32,7 +32,7 @@ class LockController extends AbstractController
      *
      * Refresh a page lock.
      */
-    public function refreshpagelockAction(
+    public function refreshPageLock(
         Request $request,
         LockingApiInterface $lockingApi,
         CurrentUserApiInterface $currentUserApi
@@ -47,7 +47,7 @@ class LockController extends AbstractController
      *
      * Change a page lock.
      */
-    public function checkpagelockAction(
+    public function checkPageLock(
         Request $request,
         LockingApiInterface $lockingApi,
         CurrentUserApiInterface $currentUserApi
