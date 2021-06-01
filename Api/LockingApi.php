@@ -233,7 +233,7 @@ class LockingApi implements LockingApiInterface
             return $sessionId;
         }
 
-        $request = $this->requestStack->getMasterRequest();
+        $request = $this->requestStack->getMainRequest();
         if ($request->hasSession() && ($session = $request->getSession())) {
             return $session->getId();
         }
